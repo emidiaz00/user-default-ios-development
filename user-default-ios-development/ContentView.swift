@@ -9,18 +9,20 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            HStack {
+                Image(systemName: "moon.circle")
+                    .font(.title)
+                Text("Dark mode")
+                    .font(.title)
+                    .bold()
+            }.navigationBarTitle("User Defaults")
         }
-        .padding()
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView().environment(\.colorScheme, .dark)
     }
 }
