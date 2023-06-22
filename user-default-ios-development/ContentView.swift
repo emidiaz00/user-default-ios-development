@@ -9,15 +9,24 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var mode : ColorScheme = .light
-    @State private var cambio = true
+    @State private var cambio : Bool!
     
-    private func changeMode() {
-        if self.cambio {
-            self.mode = .light
+    private func darkMode() {
+        if (UserDefaults.standard.object(forKey: "modoOscuro") != nil) {
+            let darkMode = UserDefaults.standard.object(forKey: "modoOscuro") as! Bool
+            if darkMode {
+                self.cambio = true
+                self.mode = .dark
+            } else {
+                self.mode = .light
+                self.cambio = false
+            }
         } else {
-            self.mode = .dark
+            self.cambio = true
+            self.mode = .light
         }
     }
+    
     var body: some View {
         NavigationView {
             HStack {
@@ -28,11 +37,13 @@ struct ContentView: View {
                     .bold()
                 Button(action: {
                     self.cambio.toggle()
-                    self.changeMode()
+                    UserDefaults.standard.set(self.cambio, forKey: "modoOscuro")
+                    self.darkMode()
                 }){
                     Text("Cambio modo")
                 }
             }.navigationBarTitle("User Defaults")
+                .onAppear( perform: darkMode)
         }.environment(\.colorScheme, self.mode)
     }
 }
